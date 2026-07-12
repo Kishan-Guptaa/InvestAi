@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    @apply bg-[#F2F0E9] text-[#2D2B2A] dark:bg-[#121212] dark:text-[#EAE6DF] font-sans;
+    background-image: 
+      linear-gradient(to right, rgba(0, 0, 0, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-position: center top;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .dark body {
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  }
+
+  /* Typography Base */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold tracking-tight text-black dark:text-white;
+  }
+
+  /* Reset outline to a crisp flat style */
+  input:focus,
+  button:focus,
+  a:focus,
+  textarea:focus {
+    @apply outline-none ring-2 ring-black dark:ring-white ring-offset-2 dark:ring-offset-[#121212] rounded-xl;
+  }
+}
+
+@layer utilities {
+  /* Neo-Brutalist Base Utilities (Replacing Swiss) */
+
+  .neo-shadow {
+    box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+  }
+
+  :is(.dark .neo-shadow) {
+    box-shadow: 6px 6px 0px 0px rgba(255, 255, 255, 1);
+  }
+
+  .swiss-border {
+    @apply border-[3px] border-black dark:border-white rounded-2xl neo-shadow transition-transform hover:-translate-y-1 hover:translate-x-[-1px];
+  }
+
+  /* Fallbacks for specific borders that might break with border-radius */
+  .swiss-border-b {
+    @apply border-b-[3px] border-black dark:border-white;
+  }
+
+  .swiss-border-t {
+    @apply border-t-[3px] border-black dark:border-white;
+  }
+
+  .swiss-border-r {
+    @apply border-r-[3px] border-black dark:border-white;
+  }
+
+  .swiss-border-l {
+    @apply border-l-[3px] border-black dark:border-white;
+  }
+
+  .swiss-panel {
+    @apply bg-[#FDFBF7] dark:bg-[#1A1A1A] border-[3px] border-[#2D2B2A] dark:border-white rounded-2xl neo-shadow;
+  }
+
+  .swiss-panel-hover {
+    @apply transition-all hover:-translate-y-1 hover:translate-x-[-1px] cursor-pointer;
+  }
+
+  .swiss-button-primary {
+    @apply bg-[#2D2B2A] text-[#FDFBF7] dark:bg-[#EAE6DF] dark:text-[#121212] font-bold px-6 py-2.5 rounded-xl hover:bg-black dark:hover:bg-white transition-colors border-2 border-transparent;
+  }
+
+  .swiss-button-secondary {
+    @apply bg-[#FDFBF7] text-[#1D4ED8] dark:bg-[#1A1A1A] dark:text-[#60A5FA] border-[3px] border-[#1D4ED8] dark:border-[#3B82F6] rounded-xl font-bold px-6 py-2.5 hover:bg-[#EFF6FF] dark:hover:bg-[#1E3A8A] transition-colors neo-shadow hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[4px_4px_0px_0px_rgba(29,78,216,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(59,130,246,1)];
+  }
+
+  .swiss-button-danger {
+    @apply bg-[#8B0000] text-white border-[3px] border-[#2D2B2A] dark:border-white rounded-xl font-bold px-6 py-2.5 neo-shadow hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[4px_4px_0px_0px_rgba(45,43,42,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)];
+  }
+
+  .swiss-badge {
+    @apply inline-block px-3 py-1 text-xs font-bold uppercase tracking-widest border-[2px] border-[#2D2B2A] dark:border-white rounded-lg bg-[#FDFBF7] dark:bg-[#1A1A1A] text-[#2D2B2A] dark:text-white neo-shadow;
+  }
+}
+
+/* Scrollbar styling for a cleaner look */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-zinc-300 dark:bg-zinc-700;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-zinc-400 dark:bg-zinc-600;
+}

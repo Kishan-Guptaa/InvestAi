@@ -1,0 +1,78 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id // Clerk User ID
+  email     String?  
+  firstName String?
+  lastName  String?
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  plan      String   @default("FREE")
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+
+  analyses       Analysis[]
+  contactMessages ContactMessage[]
+  searchQueries  SearchQuery[]
+  chatMessages   ChatMessage[]
+
+  @@map("users")
+}
+
+model Analysis {
+  id           String   @id @default(uuid())
+  userId       String   // Clerk User ID (e.g. user_2N...)
+  user         User?    @relation(fields: [userId], references: [id])
+  companyName  String
+  ticker       String
+  action       String   // "INVEST" or "PASS"
+  score        Int
+  reportJson   Json     // Full report structure
+  createdAt    DateTime @default(now())
+
+  @@map("analysis")
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  userId    String?  // Clerk User ID if authenticated
+  user      User?    @relation(fields: [userId], references: [id])
+  name      String
+  email     String
+  subject   String
+  message   String
+  status    String   @default("OPEN")
+  createdAt DateTime @default(now())
+
+  @@map("contact_messages")
+}
+
+model SearchQuery {
+  id        String   @id @default(uuid())
+  userId    String?  
+  user      User?    @relation(fields: [userId], references: [id])
+  query     String
+  createdAt DateTime @default(now())
+
+  @@map("search_queries")
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  reportId  String?  // Optional link to Analysis report if inside a saved report
+  role      String   // "user" or "assistant"
+  content   String
+  createdAt DateTime @default(now())
+
+  @@map("chat_messages")
+}
