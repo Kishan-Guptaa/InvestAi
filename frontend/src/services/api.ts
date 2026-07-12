@@ -6,7 +6,8 @@ export class ApiService {
     if (customApiKey?.trim()) headers['x-google-api-key'] = customApiKey.trim();
     if (clerkToken) headers['Authorization'] = `Bearer ${clerkToken}`;
 
-    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const rawUrl = import.meta.env.VITE_API_URL || '';
+    const baseUrl = rawUrl.endsWith('/') ? rawUrl.slice(0, -1) : rawUrl;
     const response = await fetch(`${baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`, {
       method: 'POST',
       headers,
@@ -29,7 +30,8 @@ export class ApiService {
   public async getQuote(ticker: string, clerkToken?: string): Promise<{price: string, hq: string}> {
     const headers: Record<string, string> = { 'Content-Type': 'application/json' };
     if (clerkToken) headers['Authorization'] = `Bearer ${clerkToken}`;
-    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const rawUrl = import.meta.env.VITE_API_URL || '';
+    const baseUrl = rawUrl.endsWith('/') ? rawUrl.slice(0, -1) : rawUrl;
     const response = await fetch(`${baseUrl}/api/quote/${ticker}`, { headers });
     const data = await response.json();
     return data.data;
@@ -60,7 +62,8 @@ export class ApiService {
   }
 
   public async getSharedReport(id: string) {
-    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const rawUrl = import.meta.env.VITE_API_URL || '';
+    const baseUrl = rawUrl.endsWith('/') ? rawUrl.slice(0, -1) : rawUrl;
     const response = await fetch(`${baseUrl}/api/shared/${id}`);
     const data = await response.json();
     if (!response.ok) {
@@ -103,7 +106,8 @@ export class ApiService {
   }
 
   public async getChatHistory(reportId: string, clerkToken?: string) {
-    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const rawUrl = import.meta.env.VITE_API_URL || '';
+    const baseUrl = rawUrl.endsWith('/') ? rawUrl.slice(0, -1) : rawUrl;
     const response = await fetch(`${baseUrl}/api/interactions/chat/${reportId}`, {
       headers: clerkToken ? { 'Authorization': `Bearer ${clerkToken}` } : {}
     });
@@ -115,7 +119,8 @@ export class ApiService {
    * Fetch saved analysis records from database for Clerk authenticated session.
    */
   public async createPaymentOrder(clerkToken?: string) {
-    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const rawUrl = import.meta.env.VITE_API_URL || '';
+    const baseUrl = rawUrl.endsWith('/') ? rawUrl.slice(0, -1) : rawUrl;
     const response = await fetch(`${baseUrl}/api/payments/create-order`, {
       method: 'POST',
       headers: {
@@ -128,7 +133,8 @@ export class ApiService {
   }
 
   public async verifyPayment(paymentData: any, clerkToken?: string) {
-    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const rawUrl = import.meta.env.VITE_API_URL || '';
+    const baseUrl = rawUrl.endsWith('/') ? rawUrl.slice(0, -1) : rawUrl;
     const response = await fetch(`${baseUrl}/api/payments/verify`, {
       method: 'POST',
       headers: {
@@ -148,7 +154,8 @@ export class ApiService {
         headers['Authorization'] = `Bearer ${clerkToken}`;
       }
 
-      const baseUrl = import.meta.env.VITE_API_URL || '';
+      const rawUrl = import.meta.env.VITE_API_URL || '';
+      const baseUrl = rawUrl.endsWith('/') ? rawUrl.slice(0, -1) : rawUrl;
       const response = await fetch(`${baseUrl}/api/history`, {
         headers
       });
@@ -176,7 +183,8 @@ export class ApiService {
         headers['Authorization'] = `Bearer ${clerkToken}`;
       }
 
-      const baseUrl = import.meta.env.VITE_API_URL || '';
+      const rawUrl = import.meta.env.VITE_API_URL || '';
+      const baseUrl = rawUrl.endsWith('/') ? rawUrl.slice(0, -1) : rawUrl;
       const response = await fetch(`${baseUrl}/api/history/${id}`, {
         method: 'DELETE',
         headers
