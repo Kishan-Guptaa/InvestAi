@@ -81,8 +81,8 @@ export class ApiService {
     return data.data;
   }
 
-  public async chat(question: string, context: any, customApiKey?: string, clerkToken?: string) {
-    return this.callEndpoint('/api/chat', { question, context }, customApiKey, clerkToken);
+  public async chat(query: string, context: any, customApiKey?: string, clerkToken?: string) {
+    return this.callEndpoint('/api/chat', { query, context }, customApiKey, clerkToken);
   }
 
   // --- User Interactions ---

@@ -18,8 +18,8 @@ router.post('/analyze/recommendation', authMiddleware, analyzeController.analyze
 // Save Final Report
 router.post('/analyze/save', authMiddleware, analyzeController.saveReport);
 
-// Chat
-router.post('/chat', authMiddleware, analyzeController.analyzeChat);
+// Chat (Publicly accessible for global bot)
+router.post('/chat', analyzeController.analyzeChat);
 
 // History Routes
 router.get('/history', authMiddleware, analyzeController.history);
