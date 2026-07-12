@@ -14,10 +14,19 @@ export class ApiService {
       body: JSON.stringify(payload)
     });
 
-    const data = await response.json();
+    let data;
+    try {
+      data = await response.json();
+    } catch (e) {
+      if (!response.ok) {
+        throw new Error(`API Error: Received HTTP ${response.status} from ${endpoint}. Ensure VITE_API_URL is set correctly in Vercel.`);
+      }
+      throw new Error(`Invalid JSON response from server for ${endpoint}`);
+    }
+
     if (!response.ok) {
-      const error = new Error(data.message || 'An unexpected error occurred.');
-      (error as any).code = data.code || 'API_ERROR';
+      const error = new Error(data?.message || 'An unexpected error occurred.');
+      (error as any).code = data?.code || 'API_ERROR';
       throw error;
     }
     return data.data;

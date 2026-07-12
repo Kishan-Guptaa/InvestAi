@@ -46,11 +46,15 @@ export default function ContactSupport() {
       if (response.ok) {
         setSuccess(true);
       } else {
-        alert("Failed to send message. Please try again.");
+        // Fallback to mailto if formsubmit fails (e.g. CORS or unactivated)
+        window.location.href = `mailto:timewithtitu@gmail.com?subject=${encodeURIComponent('InvestIQ Support: ' + formData.subject)}&body=${encodeURIComponent(formData.message + '\n\nFrom: ' + formData.name + ' (' + formData.email + ')')}`;
+        setSuccess(true);
       }
     } catch (error) {
       console.error('Contact form error:', error);
-      alert('Network error. Please try again later.');
+      // Fallback on complete network failure
+      window.location.href = `mailto:timewithtitu@gmail.com?subject=${encodeURIComponent('InvestIQ Support: ' + formData.subject)}&body=${encodeURIComponent(formData.message + '\n\nFrom: ' + formData.name + ' (' + formData.email + ')')}`;
+      setSuccess(true);
     } finally {
       setLoading(false);
     }
