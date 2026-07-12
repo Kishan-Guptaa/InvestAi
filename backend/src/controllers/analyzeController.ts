@@ -16,14 +16,14 @@ export class AnalyzeController {
     try {
       const { company, apiKey } = req.body;
       const headerKey = req.headers['x-google-api-key'] as string;
-      const activeKey = apiKey || headerKey || config.googleApiKey;
+      const activeKey = apiKey || headerKey || undefined;
       const trimmedCompany = company?.trim();
 
       if (!trimmedCompany) {
         res.status(400).json({ status: 'error', code: 'EMPTY_INPUT', message: 'Company name is required.' });
         return;
       }
-      if (!activeKey) {
+      if (!activeKey && !config.googleApiKey) {
         res.status(400).json({ status: 'error', code: 'MISSING_API_KEY', message: 'API key is missing.' });
         return;
       }
@@ -60,13 +60,13 @@ export class AnalyzeController {
   };
 
   private getActiveKey(req: Request) {
-    return req.body.apiKey || req.headers['x-google-api-key'] || config.googleApiKey;
+    return req.body.apiKey || req.headers['x-google-api-key'] || undefined;
   }
 
   public analyzeCompany = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const key = this.getActiveKey(req);
-      if (!key) throw new Error("Missing API Key");
+      if (!key && !config.googleApiKey) throw new Error("Missing API Key");
       const data = await langchainService.analyzeCompany(req.body.company, key);
       res.status(200).json({ status: 'success', data });
     } catch (error) { next(error); }
@@ -75,7 +75,7 @@ export class AnalyzeController {
   public analyzeFinance = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const key = this.getActiveKey(req);
-      if (!key) throw new Error("Missing API Key");
+      if (!key && !config.googleApiKey) throw new Error("Missing API Key");
       const data = await langchainService.analyzeFinance(req.body.company, key);
       res.status(200).json({ status: 'success', data });
     } catch (error) { next(error); }
@@ -84,8 +84,33 @@ export class AnalyzeController {
   public analyzeNews = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const key = this.getActiveKey(req);
-      if (!key) throw new Error("Missing API Key");
+      if (!key && !config.googleApiKey) throw new Error("Missing API Key");
       const data = await langchainService.analyzeNews(req.body.company, key);
+      res.status(200).json({ status: 'success', data });
+    } catch (error) { next(error); }
+  };
+
+  public analyzeChat = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { query, context, apiKey } = req.body;
+      const key = apiKey || req.headers['x-google-api-key'] || undefined;
+      
+      if (!query || !context) {
+        res.status(400).json({ status: 'error', message: 'Missing query or context' });
+        return;
+      }
+      if (!key && !config.googleApiKey) throw new Error("Missing API Key");
+
+      const response = await langchainService.chat(query, context, key);
+      res.status(200).json({ status: 'success', data: response });
+    } catch (error) { next(error); }
+  };
+
+  public analyzeRisk = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const key = this.getActiveKey(req);
+      if (!key && !config.googleApiKey) throw new Error("Missing API Key");
+      const data = await langchainService.analyzeRisk(req.body.company, key);
       res.status(200).json({ status: 'success', data });
     } catch (error) { next(error); }
   };
@@ -93,17 +118,8 @@ export class AnalyzeController {
   public analyzeSwot = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const key = this.getActiveKey(req);
-      if (!key) throw new Error("Missing API Key");
+      if (!key && !config.googleApiKey) throw new Error("Missing API Key");
       const data = await langchainService.analyzeSwot(req.body.company, key);
-      res.status(200).json({ status: 'success', data });
-    } catch (error) { next(error); }
-  };
-
-  public analyzeRisk = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const key = this.getActiveKey(req);
-      if (!key) throw new Error("Missing API Key");
-      const data = await langchainService.analyzeRisk(req.body.company, key);
       res.status(200).json({ status: 'success', data });
     } catch (error) { next(error); }
   };
@@ -111,8 +127,8 @@ export class AnalyzeController {
   public analyzeRecommendation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const key = this.getActiveKey(req);
-      if (!key) throw new Error("Missing API Key");
-      const data = await langchainService.analyzeRecommendation(req.body.company, JSON.stringify(req.body.context), key);
+      if (!key && !config.googleApiKey) throw new Error("Missing API Key");
+      const data = await langchainService.analyzeRecommendation(req.body.company, req.body.context, key);
       res.status(200).json({ status: 'success', data });
     } catch (error) { next(error); }
   };
@@ -167,15 +183,7 @@ export class AnalyzeController {
     } catch (error) { next(error); }
   };
 
-  public analyzeChat = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const key = this.getActiveKey(req);
-      if (!key) throw new Error("Missing API Key");
-      const { question, context } = req.body;
-      const data = await langchainService.chat(question, JSON.stringify(context), key);
-      res.status(200).json({ status: 'success', data });
-    } catch (error) { next(error); }
-  };
+
 
   /**
    * Fetch analysis history from DB for the authenticated user
