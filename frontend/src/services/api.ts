@@ -6,7 +6,8 @@ export class ApiService {
     if (customApiKey?.trim()) headers['x-google-api-key'] = customApiKey.trim();
     if (clerkToken) headers['Authorization'] = `Bearer ${clerkToken}`;
 
-    const response = await fetch(endpoint, {
+    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const response = await fetch(`${baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`, {
       method: 'POST',
       headers,
       body: JSON.stringify(payload)
@@ -28,7 +29,8 @@ export class ApiService {
   public async getQuote(ticker: string, clerkToken?: string): Promise<{price: string, hq: string}> {
     const headers: Record<string, string> = { 'Content-Type': 'application/json' };
     if (clerkToken) headers['Authorization'] = `Bearer ${clerkToken}`;
-    const response = await fetch(`/api/quote/${ticker}`, { headers });
+    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const response = await fetch(`${baseUrl}/api/quote/${ticker}`, { headers });
     const data = await response.json();
     return data.data;
   }
@@ -58,7 +60,8 @@ export class ApiService {
   }
 
   public async getSharedReport(id: string) {
-    const response = await fetch(`/api/shared/${id}`);
+    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const response = await fetch(`${baseUrl}/api/shared/${id}`);
     const data = await response.json();
     if (!response.ok) {
       throw new Error(data.message || 'Report not found or unavailable.');
@@ -100,7 +103,8 @@ export class ApiService {
   }
 
   public async getChatHistory(reportId: string, clerkToken?: string) {
-    const response = await fetch(`/api/interactions/chat/${reportId}`, {
+    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const response = await fetch(`${baseUrl}/api/interactions/chat/${reportId}`, {
       headers: clerkToken ? { 'Authorization': `Bearer ${clerkToken}` } : {}
     });
     const data = await response.json();
@@ -111,7 +115,8 @@ export class ApiService {
    * Fetch saved analysis records from database for Clerk authenticated session.
    */
   public async createPaymentOrder(clerkToken?: string) {
-    const response = await fetch('/api/payments/create-order', {
+    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const response = await fetch(`${baseUrl}/api/payments/create-order`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -123,7 +128,8 @@ export class ApiService {
   }
 
   public async verifyPayment(paymentData: any, clerkToken?: string) {
-    const response = await fetch('/api/payments/verify', {
+    const baseUrl = import.meta.env.VITE_API_URL || '';
+    const response = await fetch(`${baseUrl}/api/payments/verify`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -142,7 +148,8 @@ export class ApiService {
         headers['Authorization'] = `Bearer ${clerkToken}`;
       }
 
-      const response = await fetch('/api/history', {
+      const baseUrl = import.meta.env.VITE_API_URL || '';
+      const response = await fetch(`${baseUrl}/api/history`, {
         headers
       });
 
@@ -169,7 +176,8 @@ export class ApiService {
         headers['Authorization'] = `Bearer ${clerkToken}`;
       }
 
-      const response = await fetch(`/api/history/${id}`, {
+      const baseUrl = import.meta.env.VITE_API_URL || '';
+      const response = await fetch(`${baseUrl}/api/history/${id}`, {
         method: 'DELETE',
         headers
       });
