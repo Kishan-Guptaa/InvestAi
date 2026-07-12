@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HelpCircle, RefreshCw, X, FileText, Command, MessageSquare } from 'lucide-react';
 import { useOnboarding } from '../../context/OnboardingContext';
@@ -66,7 +66,7 @@ export const HelpPanel = () => {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-12 h-12 bg-black text-white dark:bg-white dark:text-black rounded-full shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
+        className="w-14 h-14 bg-black text-white dark:bg-white dark:text-black rounded-full shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
         aria-label="Help"
       >
         <HelpCircle className="w-6 h-6" />

@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useOnboarding } from '../../context/OnboardingContext';
 import { Sparkles } from 'lucide-react';

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { useOnboarding, TOUR_STEPS } from '../../context/OnboardingContext';
 import { ChevronRight, ChevronLeft, X, CheckCircle } from 'lucide-react';
 import Confetti from 'react-confetti';

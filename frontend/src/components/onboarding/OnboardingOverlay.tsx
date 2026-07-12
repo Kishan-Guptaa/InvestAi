@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useOnboarding, TOUR_STEPS } from '../../context/OnboardingContext';
 import { WelcomeModal } from './WelcomeModal';
 import { TourStep } from './TourStep';
