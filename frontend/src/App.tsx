@@ -30,6 +30,14 @@ import DataSecurity from './pages/legal/DataSecurity';
 import FinancialDisclaimer from './pages/legal/FinancialDisclaimer';
 import TrustCenter from './pages/legal/TrustCenter';
 
+// Onboarding
+import { OnboardingProvider } from './context/OnboardingContext';
+import { OnboardingOverlay } from './components/onboarding/OnboardingOverlay';
+import { HelpPanel } from './components/onboarding/HelpPanel';
+
+// Global AI Chat
+import { GlobalAIChat } from './components/chat/GlobalAIChat';
+
 function App() {
   const analysisState = useAnalysis();
   const {
@@ -82,8 +90,9 @@ function App() {
   // (We handle this inside pages directly or via useEffect if we want, but letting pages handle it is cleaner)
 
   return (
+    <OnboardingProvider>
     <Layout 
-      setIsSettingsOpen={setIsSettingsOpen} 
+      setIsSettingsOpen={setIsSettingsOpen}
       clerkEnabled={clerkEnabled}
       isSignedIn={isSignedIn}
     >
@@ -136,7 +145,11 @@ function App() {
         savedKey={customApiKey}
         onSave={setCustomApiKey}
       />
+      <OnboardingOverlay />
+      <HelpPanel />
+      <GlobalAIChat />
     </Layout>
+    </OnboardingProvider>
   );
 }
 

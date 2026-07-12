@@ -135,7 +135,7 @@ export default function Dashboard({ analysisState, isSignedIn }: any) {
           
           {/* Quick Actions */}
           <div className="flex flex-col gap-3">
-            <button onClick={() => navigate('/search')} className="swiss-button-primary w-full py-3 text-center justify-center">
+            <button data-tour="company-research" onClick={() => navigate('/search')} className="swiss-button-primary w-full py-3 text-center justify-center">
               Analyze New Company
             </button>
             <button onClick={() => navigate('/compare')} className="swiss-button-secondary w-full py-3 text-center justify-center">

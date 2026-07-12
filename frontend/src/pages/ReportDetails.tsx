@@ -1,9 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { ReportView } from '../components/sections/ReportView';
-import { AIChatAssistant } from '../components/chat/AIChatAssistant';
 
 export default function ReportDetails({ analysisState }: any) {
-  const { report, setReport, customApiKey } = analysisState;
+  const { report, setReport } = analysisState;
   const navigate = useNavigate();
 
   if (!report) {
@@ -29,7 +28,6 @@ export default function ReportDetails({ analysisState }: any) {
   return (
     <>
       <ReportView report={report} onReset={handleReset} />
-      <AIChatAssistant context={report} customApiKey={customApiKey} />
     </>
   );
 }

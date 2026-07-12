@@ -26,9 +26,10 @@ export const Sidebar = ({ clerkEnabled }: SidebarProps) => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const NavItem = ({ icon: Icon, label, path }: { icon: any, label: string, path: string }) => (
+  const NavItem = ({ icon: Icon, label, path, dataTour }: { icon: any, label: string, path: string, dataTour?: string }) => (
     <Link 
       to={path} 
+      data-tour={dataTour}
       className={`flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors ${
         isActive(path) 
           ? 'bg-black text-white dark:bg-white dark:text-black' 
@@ -48,7 +49,7 @@ export const Sidebar = ({ clerkEnabled }: SidebarProps) => {
   };
 
   return (
-    <aside className="w-[280px] h-screen fixed left-0 top-0 swiss-border-r flex flex-col bg-white dark:bg-[#0a0a0a] z-50">
+    <aside data-tour="sidebar" className="w-[280px] h-screen fixed left-0 top-0 swiss-border-r flex flex-col bg-white dark:bg-[#0a0a0a] z-[40]">
       {/* Brand */}
       <div className="h-16 flex items-center px-6 swiss-border-b">
         <span className="font-bold tracking-tighter text-xl">
@@ -64,8 +65,8 @@ export const Sidebar = ({ clerkEnabled }: SidebarProps) => {
           <div className="px-6 mb-2 text-xs font-bold text-zinc-400 uppercase tracking-widest">Workspace</div>
           <div className="flex flex-col gap-1 px-3">
             <NavItem icon={LayoutDashboard} label="Dashboard" path="/" />
-            <NavItem icon={Search} label="New Analysis" path="/search" />
-            <NavItem icon={Star} label="Watchlist" path="/saved" />
+            <NavItem icon={Search} label="New Analysis" path="/search" dataTour="search-bar" />
+            <NavItem icon={Star} label="Watchlist" path="/saved" dataTour="watchlist" />
           </div>
         </div>
 
@@ -73,9 +74,9 @@ export const Sidebar = ({ clerkEnabled }: SidebarProps) => {
         <div>
           <div className="px-6 mb-2 text-xs font-bold text-zinc-400 uppercase tracking-widest">Markets</div>
           <div className="flex flex-col gap-1 px-3">
-            <NavItem icon={LineChart} label="Market Overview" path="/markets" />
-            <NavItem icon={Lightbulb} label="AI Insights" path="/insights" />
-            <NavItem icon={PieChart} label="Portfolio" path="/portfolio" />
+            <NavItem icon={LineChart} label="Market Overview" path="/markets" dataTour="market-overview" />
+            <NavItem icon={Lightbulb} label="AI Insights" path="/insights" dataTour="ai-insights" />
+            <NavItem icon={PieChart} label="Portfolio" path="/portfolio" dataTour="portfolio" />
           </div>
         </div>
 
@@ -84,7 +85,7 @@ export const Sidebar = ({ clerkEnabled }: SidebarProps) => {
           <div className="px-6 mb-2 text-xs font-bold text-zinc-400 uppercase tracking-widest">Account</div>
           <div className="flex flex-col gap-1 px-3">
             <NavItem icon={CreditCard} label="Pricing" path="/pricing" />
-            <NavItem icon={Settings} label="Settings" path="/profile" />
+            <NavItem icon={Settings} label="Settings" path="/profile" dataTour="profile" />
             <NavItem icon={HelpCircle} label="Help" path="/help" />
           </div>
         </div>
